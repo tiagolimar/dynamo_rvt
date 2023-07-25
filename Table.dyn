@@ -1,0 +1,256 @@
+{
+  "Uuid": "71ee2d7c-4757-474a-a482-190b7070a57f",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "Table",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Carregar as bibliotecas DesignScript e padrão do Python\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\nclr.AddReference('RevitAPI')\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import Transaction\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\nt = Transaction(doc, 'Name')\r\nt.Start()\r\nt.Commit()\r\n\r\nelement = UnwrapElement(IN[0])\r\n\r\ntable_data = element.GetTableData()\r\ntable_data.GetSectionData(0).InsertColumn(1)\r\n\r\n\r\nOUT = 0",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "28dcb5cb05aa420bb1e513b350f2d898",
+      "Inputs": [
+        {
+          "Id": "127fe38010f1499e89afd8dabceab3b4",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "4fdf8730d37e40e287bd0ba88e5f8c62",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "07828085c04d47dfbed8b5a8067c5d07",
+          "Name": "OUT",
+          "Description": "Resultado do script Python",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Executa um script Python incorporado."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "31c9bfe8cb344f87a082193d2bb759c6",
+      "Inputs": [
+        {
+          "Id": "081c633b3a984ebdbe2033ed7537801d",
+          "Name": "",
+          "Description": "Nó para avaliar.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "29a0344f17cc4dd6aee4a4c3cf6792e1",
+          "Name": "",
+          "Description": "Observar conteúdo.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize a saída do nó."
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.Views, DSRevitNodesUI",
+      "SelectedIndex": 279,
+      "SelectedString": "TABELA TESTE",
+      "NodeType": "ExtensionNode",
+      "Id": "a21cea5215254f0897e34acd9791c7ea",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "458cda5036094668ae2c1068df22c782",
+          "Name": "Views",
+          "Description": "O Views selecionado",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Todas as vistas disponíveis no documento atual."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "c3c0c7fe323548319bbb0a880ffa1bae",
+      "Inputs": [
+        {
+          "Id": "c6ebc56a47144bc38c1ade1b5a1cba08",
+          "Name": "",
+          "Description": "Nó para avaliar.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d58fbe6475a94208a5023794346183fc",
+          "Name": "",
+          "Description": "Observar conteúdo.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize a saída do nó."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "Revit.Application.Document.Current",
+      "Id": "950059a4aa114f739f40d51bca00a484",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1da575c92f244b9483b685f80f5b0842",
+          "Name": "Document",
+          "Description": "Document",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Obter o documento atual\n\nDocument.Current: Document"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "07828085c04d47dfbed8b5a8067c5d07",
+      "End": "c6ebc56a47144bc38c1ade1b5a1cba08",
+      "Id": "4ddacc6c45c841d5aee25a563bbc9bf3"
+    },
+    {
+      "Start": "458cda5036094668ae2c1068df22c782",
+      "End": "127fe38010f1499e89afd8dabceab3b4",
+      "Id": "32899b42f1bb4ea396ccd3c6ff133e8c"
+    },
+    {
+      "Start": "458cda5036094668ae2c1068df22c782",
+      "End": "081c633b3a984ebdbe2033ed7537801d",
+      "Id": "f0af41c3c8534ef2aab302beaeda76fb"
+    },
+    {
+      "Start": "1da575c92f244b9483b685f80f5b0842",
+      "End": "4fdf8730d37e40e287bd0ba88e5f8c62",
+      "Id": "4e492c1a14f8420e9288b3eda8eca0d3"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.10.1.3976",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Visualização do plano de fundo",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "28dcb5cb05aa420bb1e513b350f2d898",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 190.67994434433922,
+        "Y": 436.13689352315515
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "31c9bfe8cb344f87a082193d2bb759c6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 170.98881452663727,
+        "Y": 119.20800310110826
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Views",
+        "Id": "a21cea5215254f0897e34acd9791c7ea",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -152.93921160551929,
+        "Y": 285.19989832601493
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "c3c0c7fe323548319bbb0a880ffa1bae",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 387.29707161050248,
+        "Y": 442.27541520516581
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Document.Current",
+        "Id": "950059a4aa114f739f40d51bca00a484",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -11.710412680621516,
+        "Y": 456.82623846182781
+      }
+    ],
+    "Annotations": [],
+    "X": 164.77906381928057,
+    "Y": 19.356198953351566,
+    "Zoom": 0.73929644681228335
+  }
+}
