@@ -7,13 +7,21 @@
     "ResolutionMap": {}
   },
   "Inputs": [],
-  "Outputs": [],
+  "Outputs": [
+    {
+      "Id": "28dcb5cb05aa420bb1e513b350f2d898",
+      "Name": "Python Script",
+      "Type": "unknown",
+      "InitialValue": "",
+      "Description": "Executa um script Python incorporado."
+    }
+  ],
   "Nodes": [
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Carregar as bibliotecas DesignScript e padrão do Python\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\nclr.AddReference('RevitAPI')\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import Transaction\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\nt = Transaction(doc, 'Name')\r\nt.Start()\r\nt.Commit()\r\n\r\nelement = UnwrapElement(IN[0])\r\n\r\ntable_data = element.GetTableData()\r\ntable_data.GetSectionData(0).InsertColumn(1)\r\n\r\n\r\nOUT = 0",
-      "Engine": "IronPython2",
+      "Code": "# Carregar as bibliotecas DesignScript e padrão do Python\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\nclr.AddReference('RevitAPI')\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import Transaction\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nt = Transaction(doc, 'Name')\r\n\r\nelement = UnwrapElement(IN[0])\r\n\r\nt.Start()\r\ntable_data = element.GetTableData()\r\n\r\nfor i in range(10):\r\n\ttable_data.GetSectionData(0).InsertColumn(1)\r\nt.Commit()\r\n\r\n\r\n\r\n\r\n\r\n\r\nOUT = 0",
+      "Engine": "CPython3",
       "VariableInputPorts": true,
       "Id": "28dcb5cb05aa420bb1e513b350f2d898",
       "Inputs": [
@@ -81,8 +89,8 @@
     },
     {
       "ConcreteType": "DSRevitNodesUI.Views, DSRevitNodesUI",
-      "SelectedIndex": 279,
-      "SelectedString": "TABELA TESTE",
+      "SelectedIndex": -1,
+      "SelectedString": "",
       "NodeType": "ExtensionNode",
       "Id": "a21cea5215254f0897e34acd9791c7ea",
       "Inputs": [],
@@ -148,6 +156,38 @@
       ],
       "Replication": "Auto",
       "Description": "Obter o documento atual\n\nDocument.Current: Document"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference(\"RevitAPI\")\r\n\r\nfrom Autodesk.Revit.DB import  (Transaction, ViewSchedule, \r\n                               ElementId, BuiltInCategory,\r\n                               SchedulableField,ScheduleFieldType,\r\n                               ScheduleDefinition)\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\ntran = Transaction(doc)\r\ntran.Start(\"Criar Tabela\")\r\n\r\nsampleSchedule = ViewSchedule.CreateSchedule(doc,ElementId(BuiltInCategory.OST_PipeCurves))\r\n\r\nparameters = ViewSchedule.GetAvailableParameters(doc,ElementId(BuiltInCategory.OST_PipeCurves)) \r\n\r\nfor param in parameters:\r\n    try:\r\n        sampleSchedule.Definition.AddField(SchedulableField(ScheduleFieldType.Instance, id))\r\n    except:\r\n        pass\r\n\r\n    sampleDefinition = sampleSchedule.Definition\r\n    \r\ntran.Commit()\r\n\r\nuidoc.ActiveView = sampleSchedule",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "3ee5b18d58b143768ceaf6b561c23efd",
+      "Inputs": [
+        {
+          "Id": "f1e37da9acbc448ebca5d6d581150433",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "3d37e3ebe31e48639d0118dfdf2450bb",
+          "Name": "OUT",
+          "Description": "Resultado do script Python",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Executa um script Python incorporado."
     }
   ],
   "Connectors": [
@@ -160,11 +200,6 @@
       "Start": "458cda5036094668ae2c1068df22c782",
       "End": "127fe38010f1499e89afd8dabceab3b4",
       "Id": "32899b42f1bb4ea396ccd3c6ff133e8c"
-    },
-    {
-      "Start": "458cda5036094668ae2c1068df22c782",
-      "End": "081c633b3a984ebdbe2033ed7537801d",
-      "Id": "f0af41c3c8534ef2aab302beaeda76fb"
     },
     {
       "Start": "1da575c92f244b9483b685f80f5b0842",
@@ -181,7 +216,7 @@
       "HasRunWithoutCrash": true,
       "IsVisibleInDynamoLibrary": true,
       "Version": "2.10.1.3976",
-      "RunType": "Automatic",
+      "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
@@ -202,7 +237,7 @@
         "Name": "Python Script",
         "Id": "28dcb5cb05aa420bb1e513b350f2d898",
         "IsSetAsInput": false,
-        "IsSetAsOutput": false,
+        "IsSetAsOutput": true,
         "Excluded": false,
         "X": 190.67994434433922,
         "Y": 436.13689352315515
@@ -224,8 +259,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -152.93921160551929,
-        "Y": 285.19989832601493
+        "X": -333.59463153287163,
+        "Y": 371.16705047200958
       },
       {
         "ShowGeometry": true,
@@ -234,8 +269,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 387.29707161050248,
-        "Y": 442.27541520516581
+        "X": 456.46532293607822,
+        "Y": 432.27518609785363
       },
       {
         "ShowGeometry": true,
@@ -243,14 +278,24 @@
         "Id": "950059a4aa114f739f40d51bca00a484",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
+        "Excluded": true,
+        "X": -144.40148178871425,
+        "Y": 462.28783230654585
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "3ee5b18d58b143768ceaf6b561c23efd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -11.710412680621516,
-        "Y": 456.82623846182781
+        "X": -105.73596801823521,
+        "Y": 15.632510729504588
       }
     ],
     "Annotations": [],
-    "X": 164.77906381928057,
-    "Y": 19.356198953351566,
-    "Zoom": 0.73929644681228335
+    "X": 303.1996263113885,
+    "Y": 220.97479248338317,
+    "Zoom": 0.95581215545570886
   }
 }
